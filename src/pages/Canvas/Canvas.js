@@ -62,27 +62,32 @@ export default function Canvas() {
         // ctx.drawImage(image, -1200, -70)
         ctx.drawImage(playerImage, 0, 0, playerImage.width/4, playerImage.height, canvas.width/2 - (playerImage.width/4)/4, canvas.height/2 - playerImage.height/2, playerImage.width/4, playerImage.height)
 
-        if(keys.w.pressed) {
-            background.position.y = background.position.y - 3
-        }
-        
+        if(keys.w.pressed && lastKey === 'w') background.position.y += 3
+        else if(keys.a.pressed && lastKey === 'a') background.position.x += 3
+        else if(keys.s.pressed && lastKey === 's') background.position.y -= 3
+        else if(keys.d.pressed && lastKey === 'd') background.position.x -= 3
     }
     animate()
 
     //move player through map on keydown
+    let lastKey = ''
     window.addEventListener('keydown', (e) => {
         switch (e.key) {
             case 'w':
                 keys.w.pressed = true 
+                lastKey = 'w'
                 break 
             case 'a':
                 keys.a.pressed = true 
+                lastKey = 'a'
                 break 
             case 's':
                 keys.s.pressed = true 
+                lastKey = 's'
                 break 
             case 'd':
                 keys.d.pressed = true 
+                lastKey = 'd'
                 break 
         }
     })
