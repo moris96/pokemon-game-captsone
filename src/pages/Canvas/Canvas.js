@@ -1,17 +1,30 @@
 export default function Canvas() {
     const canvas = document.querySelector('canvas')
-    const c = canvas.getContext('2d')
+    const ctx = canvas.getContext('2d')
 
-    canvas.width = 1024
-    canvas.height = 576
-
-    c.fillStyle = 'white'
-    c.fillRect(0,0, canvas.width, canvas.height)
-
-    const image = new Image('./public/pokemonMap/PokemonTown.png')
-    image.src = './public/pokemonMap/PokemonTown.png'
-    
-    image.onload = () => {
-        c.drawImage(image, 0, 0)
+    //draw canvas
+    function drawCanvas() {
+        canvas.width = 1024
+        canvas.height = 576
+        ctx.fillStyle = 'white'
+        ctx.fillRect(0,0, canvas.width, canvas.height)
     }
+    drawCanvas()
+    
+    //place images on canvas 
+    function drawImage() {
+        //background image
+        const image = new Image()
+        image.src = './pokemonMap/MapZoom.png'
+        //playerDown image 
+        const playerImage = new Image()
+        playerImage.src = './player/playerDown.png'
+        
+        image.onload = () => {
+            ctx.drawImage(image, -1200, -70)
+            ctx.drawImage(playerImage, 0, 0, playerImage.width/4, playerImage.height, canvas.width/2 - (playerImage.width/4)/4, canvas.height/2 - playerImage.height/2, playerImage.width/4, playerImage.height)
+        }
+    }
+    drawImage()
+
 };

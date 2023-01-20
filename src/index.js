@@ -5,7 +5,7 @@ import './styles.css'
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-const canvas = ReactDOM.createRoot(document.getElementById('canvas'))
+const canvas = ReactDOM.createRoot(document.getElementById('canvas'));
 root.render(
   <React.StrictMode>
     <App />

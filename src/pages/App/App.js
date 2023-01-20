@@ -13,6 +13,6 @@ function App() {
       <Canvas />
     </div>
   );
-}
+};
 
 export default App;
