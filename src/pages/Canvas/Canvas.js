@@ -1,12 +1,21 @@
+import { collisions } from "../../collisions/collisions"
+
 export default function Canvas() {
+    // console.log(collisions)
+
     const canvas = document.querySelector('canvas')
     const ctx = canvas.getContext('2d')
 
     //draw canvas
     canvas.width = 1024
     canvas.height = 576
-    ctx.fillStyle = 'white'
-    ctx.fillRect(0,0, canvas.width, canvas.height)
+    
+    const collisionsMap = []
+    for(let i = 0; i < collisions.length; i += 70){
+        collisionsMap.push(collisions.slice(i, 70 + i))
+        // console.log(collisions.slice(i, 70 + i))
+    }
+    console.log(collisionsMap)
 
     //place images on canvas 
     //background image
@@ -56,7 +65,7 @@ export default function Canvas() {
     }
 
     //animate player sprite
-    function animate() {
+    const animate = () => {
         window.requestAnimationFrame(animate)
         background.draw()
         // ctx.drawImage(image, -1200, -70)

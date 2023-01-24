@@ -13,3 +13,5 @@
 ### Key Learnings / Takeaways: 
 * Learned more about game development and web development 
 
+### Challenges: 
+* Collission detection 
