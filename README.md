@@ -15,3 +15,4 @@
 
 ### Challenges: 
 * Collission detection 
+* Loading character sprites 
