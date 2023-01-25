@@ -1,7 +1,6 @@
 import { collisions } from "../../collisions/collisions"
 
 export default function Canvas() {
-    // console.log(collisions)
 
     const canvas = document.querySelector('canvas')
     const ctx = canvas.getContext('2d')
@@ -10,12 +9,49 @@ export default function Canvas() {
     canvas.width = 1024
     canvas.height = 576
     
+    //2d array for collision detection 
     const collisionsMap = []
     for(let i = 0; i < collisions.length; i += 70){
         collisionsMap.push(collisions.slice(i, 70 + i))
         // console.log(collisions.slice(i, 70 + i))
     }
-    console.log(collisionsMap)
+    // console.log(collisionsMap)
+
+    class Boundary {
+        static width = 48
+        static height = 48
+        constructor({ position }){
+            this.position = position
+            this.width = 48
+            this.height = 48
+        }
+        draw(){
+            ctx.fillStyle = 'red'
+            ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
+        }
+    }
+
+    const boundaries = []
+    const offset = {
+        x: -1200,
+        y: -70
+    }
+
+    collisionsMap.forEach((row, i) => {
+        row.forEach((symbol, j) => {
+            if(symbol === 1025)
+            boundaries.push(
+                new Boundary({
+                    position: {
+                        x: j * Boundary.width + offset.x,
+                        y: i * Boundary.height + offset.y
+                    }
+                })
+            )
+        })
+    })
+// console.log(boundaries)
+
 
     //place images on canvas 
     //background image
@@ -24,27 +60,55 @@ export default function Canvas() {
     //playerDown image 
     const playerImage = new Image()
     playerImage.src = './player/playerDown.png'
-        
-    // image.onload = () => {
-    //     ctx.drawImage(image, -1200, -70)
-    //     ctx.drawImage(playerImage, 0, 0, playerImage.width/4, playerImage.height, canvas.width/2 - (playerImage.width/4)/4, canvas.height/2 - playerImage.height/2, playerImage.width/4, playerImage.height)
-    // }
+
 
     class Sprite {
-        constructor({ position, velocity, image }) {
+        constructor({ position, velocity, image, frames = { max: 1 } }) {
             this.position = position
             this.image = image
-        }
+            this.frames = frames 
 
+            this.image.onload = () => {
+                this.width = this.image.width / this.frames.max
+                this.height = this.image.height / this.frames.max
+                console.log(this.width)
+                console.log(this.height)
+            }
+             
+        }
         draw() {
-            ctx.drawImage(this.image, this.position.x, this.position.y)
+            // ctx.drawImage(this.image, this.position.x, this.position.y)
+            ctx.drawImage(
+                this.image,
+                0,
+                0,
+                this.image.width / this.frames.max,
+                this.image.height,
+                this.position.x,
+                this.position.y,
+                this.image.width / this.frames.max,
+                this.image.height
+            )
         }
     }
 
+    // const player = ctx.drawImage(playerImage, 0, 0, playerImage.width/4, playerImage.height, canvas.width/2 - (playerImage.width/4)/4, canvas.height/2 - playerImage.height/2, playerImage.width/4, playerImage.height)
+
+    const player = new Sprite({
+        position: {
+            x: canvas.width / 2 - 192 / 4 / 2,
+            y: canvas.height / 2 - 68 / 2
+        },
+        image: playerImage,
+        frames: {
+            max: 4
+        }
+    })
+
     const background = new Sprite({
         position: {
-            x: -1200,
-            y: -70
+            x: offset.x,
+            y: offset.y
         },
         image: image
     })
@@ -64,17 +128,46 @@ export default function Canvas() {
         }
     }
 
+    const testBoundary = new Boundary({
+        position: {
+            x: 400,
+            y: 400
+        }
+    })
+
+    const movables = [background, testBoundary]
+
     //animate player sprite
-    const animate = () => {
+    function animate(){
         window.requestAnimationFrame(animate)
         background.draw()
+        // boundaries.forEach(boundary => {
+        //     boundary.draw()
+        // })
+        testBoundary.draw()
+        player.draw()
         // ctx.drawImage(image, -1200, -70)
-        ctx.drawImage(playerImage, 0, 0, playerImage.width/4, playerImage.height, canvas.width/2 - (playerImage.width/4)/4, canvas.height/2 - playerImage.height/2, playerImage.width/4, playerImage.height)
 
-        if(keys.w.pressed && lastKey === 'w') background.position.y += 3
-        else if(keys.a.pressed && lastKey === 'a') background.position.x += 3
-        else if(keys.s.pressed && lastKey === 's') background.position.y -= 3
-        else if(keys.d.pressed && lastKey === 'd') background.position.x -= 3
+        if(player.position.x + player.width >= testBoundary.position.x && 
+            player.position.x <= testBoundary.position.x + testBoundary.width &&
+            player.position.y <= testBoundary.position.y + testBoundary.height){
+            console.log('colliding')
+        }
+
+        if(keys.w.pressed && lastKey === 'w'){
+            movables.forEach(movable => {movable.position.y += 3})
+            // background.position.y += 3
+            // testBoundary.position.y += 3
+        } else if(keys.a.pressed && lastKey === 'a'){
+            movables.forEach(movable => {movable.position.x += 3})
+        } else if(keys.s.pressed && lastKey === 's'){
+            movables.forEach(movable => {movable.position.y -= 3})
+        } else if(keys.d.pressed && lastKey === 'd'){
+            movables.forEach(movable => {movable.position.x -= 3})
+        }
+        // else if(keys.a.pressed && lastKey === 'a') {background.position.x += 3}
+        // else if(keys.s.pressed && lastKey === 's') {background.position.y -= 3}
+        // else if(keys.d.pressed && lastKey === 'd') {background.position.x -= 3}
     }
     animate()
 
