@@ -137,6 +137,15 @@ export default function Canvas() {
 
     const movables = [background, testBoundary]
 
+    function rectangularCollision({rectangle1, rectangle2}){
+        return(
+            rectangle1.position.x + rectangle1.width >= rectangle2.position.x && 
+            rectangle1.position.x <= rectangle2.position.x + rectangle2.width &&
+            rectangle1.position.y <= rectangle2.position.y + rectangle2.height &&
+            rectangle1.position.y + rectangle1.height >= rectangle2.position.y
+        )
+    }
+
     //animate player sprite
     function animate(){
         window.requestAnimationFrame(animate)
@@ -146,11 +155,11 @@ export default function Canvas() {
         // })
         testBoundary.draw()
         player.draw()
-        // ctx.drawImage(image, -1200, -70)
-
-        if(player.position.x + player.width >= testBoundary.position.x && 
-            player.position.x <= testBoundary.position.x + testBoundary.width &&
-            player.position.y <= testBoundary.position.y + testBoundary.height){
+        
+        if(rectangularCollision({
+            rectangle1: player,
+            rectangle2: testBoundary
+        })){
             console.log('colliding')
         }
 
