@@ -60,27 +60,37 @@ export default function Canvas() {
     //playerDown image 
     const playerImage = new Image()
     playerImage.src = './player/playerDown.png'
+    //playerUp image
+    const playerUpImage = new Image()
+    playerUpImage.src = './player/playerUp.png'
+    //playerLeft image
+    const playerLeftImage = new Image()
+    playerLeftImage.src = './player/playerLeft.png'
+    //playerRight image
+    const playerRightImage = new Image()
+    playerRightImage.src = './player/playerRight.png'
 
 
     class Sprite {
-        constructor({ position, velocity, image, frames = { max: 1 } }) {
+        constructor({ position, velocity, image, frames = { max: 1 }, sprites }) {
             this.position = position
             this.image = image
-            this.frames = frames 
+            this.frames = {...frames, val: 0, elapsed: 0}
 
             this.image.onload = () => {
                 this.width = this.image.width / this.frames.max
                 this.height = this.image.height / this.frames.max
-                console.log(this.width)
-                console.log(this.height)
+                // console.log(this.width)
+                // console.log(this.height)
             }
-             
+            this.moving = false 
+            this.sprites = sprites
         }
         draw() {
             // ctx.drawImage(this.image, this.position.x, this.position.y)
             ctx.drawImage(
                 this.image,
-                0,
+                this.frames.val * this.width,
                 0,
                 this.image.width / this.frames.max,
                 this.image.height,
@@ -89,6 +99,18 @@ export default function Canvas() {
                 this.image.width / this.frames.max,
                 this.image.height
             )
+
+            if(!this.moving) return 
+
+            if(this.frames.max > 1){
+                this.frames.elapsed++
+            }
+
+            if(this.frames.elapsed % 10 === 0){
+                if(this.frames.val < this.frames.max - 1) this.frames.val++
+                else this.frames.val = 0 
+            }
+            // this.moving = false 
         }
     }
 
@@ -102,6 +124,12 @@ export default function Canvas() {
         image: playerImage,
         frames: {
             max: 4
+        },
+        sprites: {
+            up: playerUpImage,
+            left: playerLeftImage,
+            right: playerRightImage,
+            down: playerImage
         }
     })
 
@@ -152,7 +180,11 @@ export default function Canvas() {
         player.draw()
 
         let moving = true 
+        player.moving = false 
         if(keys.w.pressed && lastKey === 'w'){
+            player.moving = true 
+            player.image = player.sprites.up
+
             for(let i in boundaries){
                 const boundary = boundaries[i]
                 if(rectangularCollision({
@@ -164,7 +196,7 @@ export default function Canvas() {
                 }
                 })
                 ) {
-                    console.log('colliding')
+                    console.log('colliding up')
                 moving = false 
                     break 
                 }
@@ -173,6 +205,8 @@ export default function Canvas() {
             if(moving)
             movables.forEach((movable) => {movable.position.y += 3})
         } else if(keys.a.pressed && lastKey === 'a'){
+            player.moving = true 
+            player.image = player.sprites.left
             for(let i in boundaries){
                 const boundary = boundaries[i]
                 if(rectangularCollision({
@@ -184,7 +218,7 @@ export default function Canvas() {
                 }
                 })
                 ) {
-                    console.log('colliding')
+                    console.log('colliding left')
                 moving = false 
                     break 
                 }
@@ -193,6 +227,8 @@ export default function Canvas() {
             if(moving)
             movables.forEach((movable) => {movable.position.x += 3})
         } else if(keys.s.pressed && lastKey === 's'){
+            player.moving = true 
+            player.image = player.sprites.down
             for(let i in boundaries){
                 const boundary = boundaries[i]
                 if(rectangularCollision({
@@ -204,7 +240,7 @@ export default function Canvas() {
                 }
                 })
                 ) {
-                    console.log('colliding')
+                    console.log('colliding down')
                 moving = false 
                     break 
                 }
@@ -213,6 +249,8 @@ export default function Canvas() {
             if(moving)
             movables.forEach((movable) => {movable.position.y -= 3})
         } else if(keys.d.pressed && lastKey === 'd'){
+            player.moving = true 
+            player.image = player.sprites.right
             for(let i in boundaries){
                 const boundary = boundaries[i]
                 if(rectangularCollision({
@@ -224,7 +262,7 @@ export default function Canvas() {
                 }
                 })
                 ) {
-                    console.log('colliding')
+                    console.log('colliding right')
                 moving = false 
                     break 
                 }
