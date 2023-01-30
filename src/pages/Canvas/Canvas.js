@@ -1,4 +1,5 @@
 import { collisions } from "../../collisions/collisions"
+import { battleZonesData } from "../../battle_zones/battleZones"
 
 export default function Canvas() {
 
@@ -13,9 +14,17 @@ export default function Canvas() {
     const collisionsMap = []
     for(let i = 0; i < collisions.length; i += 70){
         collisionsMap.push(collisions.slice(i, 70 + i))
-        // console.log(collisions.slice(i, 70 + i))
     }
-    // console.log(collisionsMap)
+
+    //2d array for battle zones 
+    const battleZonesMap = []
+    for(let i = 0; i < battleZonesData.length; i += 70){
+        battleZonesMap.push(battleZonesData.slice(i, 70 + i))
+    }
+
+    const battleZones = []
+
+
 
     class Boundary {
         static width = 48
@@ -26,7 +35,7 @@ export default function Canvas() {
             this.height = 48
         }
         draw(){
-            ctx.fillStyle = 'rgba(255, 0, 0, 0)'
+            ctx.fillStyle = 'rgba(255, 0, 0, 0.5)'
             ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
         }
     }
@@ -51,6 +60,21 @@ export default function Canvas() {
         })
     })
 // console.log(boundaries)
+
+    battleZonesMap.forEach((row, i) => {
+        row.forEach((symbol, j) => {
+            if(symbol === 1025)
+            battleZones.push(
+                new Boundary({
+                    position: {
+                        x: j * Boundary.width + offset.x,
+                        y: i * Boundary.height + offset.y
+                    }
+                })
+            )
+        })
+    })
+    // console.log(battleZones)
 
 
     //place images on canvas 
@@ -138,7 +162,7 @@ export default function Canvas() {
             x: offset.x,
             y: offset.y
         },
-        image: image
+        image
     })
 
     const keys = {
@@ -158,7 +182,7 @@ export default function Canvas() {
 
 
 
-    const movables = [background, ...boundaries]
+    const movables = [background, ...boundaries, ...battleZones]
 
     function rectangularCollision({rectangle1, rectangle2}){
         return(
@@ -177,7 +201,37 @@ export default function Canvas() {
             boundary.draw()
             
         })
+        battleZones.forEach(battleZones => {
+            battleZones.draw()
+        })
         player.draw()
+
+        if(keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed){
+            for(let i in battleZones){
+                const battleZone = battleZones[i]
+                const overlappingArea = 
+                (Math.min(
+                    player.position.x + player.width,
+                    battleZone.position.x + player.width
+                ) - 
+                    Math.max(player.position.x, battleZone.position.x)) *
+                (Math.min(
+                    player.position.y + player.height,
+                    battleZone.position.y + battleZone.height
+                ) - 
+                    Math.max(player.position.y, battleZone.position.y))
+                if(rectangularCollision({
+                    rectangle1: player,
+                    rectangle2: battleZone
+                }) &&
+                overlappingArea > (player.width * player.height) / 2
+                && Math.random() < 0.01
+                ) {
+                    console.log('battle zone collision')
+                    break 
+                }
+            }
+        }
 
         let moving = true 
         player.moving = false 
@@ -204,7 +258,9 @@ export default function Canvas() {
 
             if(moving)
             movables.forEach((movable) => {movable.position.y += 3})
-        } else if(keys.a.pressed && lastKey === 'a'){
+            return;
+        }
+        if(keys.a.pressed && lastKey === 'a'){
             player.moving = true 
             player.image = player.sprites.left
             for(let i in boundaries){
@@ -226,7 +282,9 @@ export default function Canvas() {
 
             if(moving)
             movables.forEach((movable) => {movable.position.x += 3})
-        } else if(keys.s.pressed && lastKey === 's'){
+            return;
+        }
+        if(keys.s.pressed && lastKey === 's'){
             player.moving = true 
             player.image = player.sprites.down
             for(let i in boundaries){
@@ -248,7 +306,9 @@ export default function Canvas() {
 
             if(moving)
             movables.forEach((movable) => {movable.position.y -= 3})
-        } else if(keys.d.pressed && lastKey === 'd'){
+            return;
+        }
+        if(keys.d.pressed && lastKey === 'd'){
             player.moving = true 
             player.image = player.sprites.right
             for(let i in boundaries){
