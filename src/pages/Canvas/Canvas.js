@@ -1,5 +1,6 @@
 import { collisions } from "../../collisions/collisions"
 import { battleZonesData } from "../../battle_zones/battleZones"
+import { gsap } from "gsap"
 
 export default function Canvas() {
 
@@ -193,9 +194,13 @@ export default function Canvas() {
         )
     }
 
+    const battle = {
+        initiated: false 
+    }
+
     //animate player sprite
     function animate(){
-        window.requestAnimationFrame(animate)
+        const animationID = window.requestAnimationFrame(animate)
         background.draw()
         boundaries.forEach(boundary => {
             boundary.draw()
@@ -206,6 +211,13 @@ export default function Canvas() {
         })
         player.draw()
 
+        let moving = true 
+        player.moving = false 
+
+
+        if(battle.initiated) return 
+
+        // activate battle 
         if(keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed){
             for(let i in battleZones){
                 const battleZone = battleZones[i]
@@ -227,14 +239,35 @@ export default function Canvas() {
                 overlappingArea > (player.width * player.height) / 2
                 && Math.random() < 0.01
                 ) {
-                    console.log('battle zone collision')
+                    console.log('activate battle')
+                     //deactivate current animation loop 
+                     window.cancelAnimationFrame(animationID)
+                     console.log(animationID)
+
+                    battle.initiated = true 
+                    gsap.to('.overlapping-div', {
+                        opacity: 1,
+                        repeat: 3,
+                        yoyo: true,
+                        duration: 0.4,
+                        onComplete(){
+                            gsap.to('.overlapping-div', {
+                                opacity: 1,
+                                duration: 0.4 
+                            })
+
+                            //activate new animation loop
+                            animateBattle()
+
+                           
+                        }
+                    })
                     break 
                 }
             }
         }
 
-        let moving = true 
-        player.moving = false 
+        
         if(keys.w.pressed && lastKey === 'w'){
             player.moving = true 
             player.image = player.sprites.up
@@ -337,6 +370,13 @@ export default function Canvas() {
     }
     animate()
 
+    function animateBattle(){
+        window.requestAnimationFrame(animateBattle)
+        console.log('animating battle')
+    }
+
+
+
     //move player through map on keydown
     let lastKey = ''
     window.addEventListener('keydown', (e) => {
@@ -376,6 +416,14 @@ export default function Canvas() {
                 break 
         }
     })
+
+    return (
+        <>        
+            <div className="display-block">
+                <div className="overlapping-div"></div>
+            </div>
+        </>
+    );
 
 
 };

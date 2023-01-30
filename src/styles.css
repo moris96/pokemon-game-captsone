@@ -5,3 +5,22 @@ body {
 h1 {
     color: white;
 }
+
+.display-block {
+    display: inline-block;
+    position: relative;
+}
+
+.overlapping-div {
+    background-color: black;
+    width: 1024px;
+    height: 580px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+

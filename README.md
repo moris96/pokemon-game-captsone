@@ -8,6 +8,7 @@
 * React.js
 * Tiled Map Editor (for creating the game map)
 * itch.io (for free game assets like sprites)
+* gsap cdn (for high-performance animations) 
 
 
 ### Key Learnings / Takeaways: 
