@@ -97,7 +97,7 @@ export default function Canvas() {
 
 
     class Sprite {
-        constructor({ position, velocity, image, frames = { max: 1 }, sprites, animate = false }) {
+        constructor({ position, velocity, image, frames = { max: 1, hold: 10 }, sprites, animate = false }) {
             this.position = position
             this.image = image
             this.frames = {...frames, val: 0, elapsed: 0}
@@ -131,7 +131,7 @@ export default function Canvas() {
                 this.frames.elapsed++
             }
 
-            if(this.frames.elapsed % 10 === 0){
+            if(this.frames.elapsed % this.frames.hold === 0){
                 if(this.frames.val < this.frames.max - 1) this.frames.val++
                 else this.frames.val = 0 
             }
@@ -148,7 +148,8 @@ export default function Canvas() {
         },
         image: playerImage,
         frames: {
-            max: 4
+            max: 4,
+            hold: 10 
         },
         sprites: {
             up: playerUpImage,
@@ -396,18 +397,37 @@ export default function Canvas() {
         },
         image: elonImage,
         frames: {
-            max: 4 
+            max: 4,
+            hold: 30
         },
         animate: true 
     }) 
+
+    //charizard (hero) image
+    const charizardImage = new Image()
+    charizardImage.src = './pokes/charizard.png'
+    const charizard = new Sprite({
+        position: {
+            x: 400,
+            y: 430
+        },
+        image: charizardImage,
+        frames: {
+            max: 4,
+            hold: 30
+        },
+        animate: true 
+    })
 
     function animateBattle(){
         window.requestAnimationFrame(animateBattle)
         console.log('animating battle')
         battleBackground.draw()
         elon.draw()
+        charizard.draw()
     }
     animateBattle()
+    // animate()
 
 
     //move player through map on keydown
