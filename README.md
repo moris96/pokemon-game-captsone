@@ -9,6 +9,7 @@
 * Tiled Map Editor (for creating the game map)
 * itch.io (for free game assets like sprites)
 * gsap cdn (for high-performance animations) 
+* Adobe Photoshop (for image polishing)
 
 
 ### Key Learnings / Takeaways: 

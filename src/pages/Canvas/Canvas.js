@@ -258,9 +258,8 @@ export default function Canvas() {
                                     //activate new animation loop
                                     animateBattle()
                                     gsap.to('.overlapping-div', {
-                                        opacity: 1,
-                                        duration: 0.4
-                                        
+                                        opacity: 0,
+                                        duration: 0.4 
                                     })
                                 }
                             })
@@ -374,7 +373,7 @@ export default function Canvas() {
         // else if(keys.s.pressed && lastKey === 's') {background.position.y -= 3}
         // else if(keys.d.pressed && lastKey === 'd') {background.position.x -= 3}
     }
-    animate()
+    // animate()
 
     const battleBackgroundImage = new Image()
     battleBackgroundImage.src = './pokemonMap/battleBackground.png'
@@ -391,7 +390,7 @@ export default function Canvas() {
         console.log('animating battle')
         battleBackground.draw()
     }
-
+    animateBattle()
 
 
     //move player through map on keydown
