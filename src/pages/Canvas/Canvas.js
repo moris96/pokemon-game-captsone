@@ -253,11 +253,17 @@ export default function Canvas() {
                         onComplete(){
                             gsap.to('.overlapping-div', {
                                 opacity: 1,
-                                duration: 0.4 
+                                duration: 0.4,
+                                onComplete() {
+                                    //activate new animation loop
+                                    animateBattle()
+                                    gsap.to('.overlapping-div', {
+                                        opacity: 1,
+                                        duration: 0.4
+                                        
+                                    })
+                                }
                             })
-
-                            //activate new animation loop
-                            animateBattle()
 
                            
                         }
@@ -370,9 +376,20 @@ export default function Canvas() {
     }
     animate()
 
+    const battleBackgroundImage = new Image()
+    battleBackgroundImage.src = './pokemonMap/battleBackground.png'
+    const battleBackground = new Sprite({
+        position: {
+            x: 0,
+            y: 0
+        },
+        image: battleBackgroundImage
+    })
+
     function animateBattle(){
         window.requestAnimationFrame(animateBattle)
         console.log('animating battle')
+        battleBackground.draw()
     }
 
 
@@ -417,6 +434,8 @@ export default function Canvas() {
         }
     })
 
+
+    //return HTML DOM 
     return (
         <>        
             <div className="display-block">
