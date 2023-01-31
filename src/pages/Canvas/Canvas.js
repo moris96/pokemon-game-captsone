@@ -97,7 +97,7 @@ export default function Canvas() {
 
 
     class Sprite {
-        constructor({ position, velocity, image, frames = { max: 1 }, sprites }) {
+        constructor({ position, velocity, image, frames = { max: 1 }, sprites, animate = false }) {
             this.position = position
             this.image = image
             this.frames = {...frames, val: 0, elapsed: 0}
@@ -108,7 +108,7 @@ export default function Canvas() {
                 // console.log(this.width)
                 // console.log(this.height)
             }
-            this.moving = false 
+            this.animate = animate 
             this.sprites = sprites
         }
         draw() {
@@ -125,7 +125,7 @@ export default function Canvas() {
                 this.image.height
             )
 
-            if(!this.moving) return 
+            if(!this.animate) return 
 
             if(this.frames.max > 1){
                 this.frames.elapsed++
@@ -212,7 +212,7 @@ export default function Canvas() {
         player.draw()
 
         let moving = true 
-        player.moving = false 
+        player.animate = false 
 
 
         if(battle.initiated) return 
@@ -274,7 +274,7 @@ export default function Canvas() {
 
         
         if(keys.w.pressed && lastKey === 'w'){
-            player.moving = true 
+            player.animate = true 
             player.image = player.sprites.up
 
             for(let i in boundaries){
@@ -299,7 +299,7 @@ export default function Canvas() {
             return;
         }
         if(keys.a.pressed && lastKey === 'a'){
-            player.moving = true 
+            player.animate = true 
             player.image = player.sprites.left
             for(let i in boundaries){
                 const boundary = boundaries[i]
@@ -323,7 +323,7 @@ export default function Canvas() {
             return;
         }
         if(keys.s.pressed && lastKey === 's'){
-            player.moving = true 
+            player.animate = true 
             player.image = player.sprites.down
             for(let i in boundaries){
                 const boundary = boundaries[i]
@@ -347,7 +347,7 @@ export default function Canvas() {
             return;
         }
         if(keys.d.pressed && lastKey === 'd'){
-            player.moving = true 
+            player.animate = true 
             player.image = player.sprites.right
             for(let i in boundaries){
                 const boundary = boundaries[i]
@@ -375,6 +375,7 @@ export default function Canvas() {
     }
     // animate()
 
+    //battle background image 
     const battleBackgroundImage = new Image()
     battleBackgroundImage.src = './pokemonMap/battleBackground.png'
     const battleBackground = new Sprite({
@@ -385,10 +386,26 @@ export default function Canvas() {
         image: battleBackgroundImage
     })
 
+    //elon (enemy) image
+    const elonImage = new Image()
+    elonImage.src = './pokes/elon.png'
+    const elon = new Sprite({
+        position: {
+            x: 695,
+            y: 235
+        },
+        image: elonImage,
+        frames: {
+            max: 4 
+        },
+        animate: true 
+    }) 
+
     function animateBattle(){
         window.requestAnimationFrame(animateBattle)
         console.log('animating battle')
         battleBackground.draw()
+        elon.draw()
     }
     animateBattle()
 
@@ -434,7 +451,6 @@ export default function Canvas() {
     })
 
 
-    //return HTML DOM 
     return (
         <>        
             <div className="display-block">
