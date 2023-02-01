@@ -10,7 +10,7 @@
 * itch.io (for free game assets like sprites)
 * gsap cdn (for high-performance animations) 
 * Adobe Photoshop (for image polishing)
-* Google Fonts (for custom fonts)
+* CDC Fonts (for custom fonts)
 
 
 ### Key Learnings / Takeaways: 
