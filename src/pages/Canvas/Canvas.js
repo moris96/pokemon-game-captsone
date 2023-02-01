@@ -392,8 +392,8 @@ export default function Canvas() {
     elonImage.src = './pokes/elon.png'
     const elon = new Sprite({
         position: {
-            x: 695,
-            y: 235
+            x: 690,
+            y: 50
         },
         image: elonImage,
         frames: {
@@ -408,8 +408,8 @@ export default function Canvas() {
     charizardImage.src = './pokes/charizard.png'
     const charizard = new Sprite({
         position: {
-            x: 400,
-            y: 430
+            x: 200,
+            y: 230
         },
         image: charizardImage,
         frames: {
@@ -472,10 +472,14 @@ export default function Canvas() {
 
 
     return (
-        <>        
+        <>   
+            {/* <div className="attack-bar" /> */}
+
             <div className="display-block">
-                <div className="overlapping-div"></div>
+                <div className="overlapping-div" />
             </div>
+
+            
         </>
     );
 

@@ -29,3 +29,12 @@ h1 {
     pointer-events: none;
 }
 
+.attack-bar {
+    background-color: white;
+    width: 1025px;
+    height: 200px;
+    position: absolute;
+    top: 60%;
+    left: 388px;
+    bottom: 0;
+}
