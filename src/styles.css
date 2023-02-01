@@ -29,12 +29,31 @@ h1 {
     pointer-events: none;
 }
 
-.attack-bar {
+#attack-bar {
     background-color: white;
-    width: 1025px;
+    width: 1020px;
     height: 200px;
     position: absolute;
     top: 60%;
     left: 388px;
     bottom: 0;
+    border: 4px solid black;
+    display: flex;
+}
+
+.attack-button {
+    width: 66.66%;
+}
+
+.attack-type {
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 33.33%;
+    border-left: 4px solid black;
+}
+
+h2 {
+    margin: 0;
 }

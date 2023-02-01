@@ -473,7 +473,16 @@ export default function Canvas() {
 
     return (
         <>   
-            {/* <div className="attack-bar" /> */}
+
+            {/* <div id="attack-bar">
+                <div class="attack-button">
+                    <button>Attack 1</button>
+                </div>
+            </div> */}
+
+            {/* <div className="attack-button">
+                <button>Attack 1</button>
+            </div> */}
 
             <div className="display-block">
                 <div className="overlapping-div" />
