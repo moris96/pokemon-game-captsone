@@ -467,8 +467,8 @@ export default function Canvas() {
             case 'd':
                 keys.d.pressed = false 
                 break 
-        }
-    })
+        } 
+    }) 
 
 
     return (
