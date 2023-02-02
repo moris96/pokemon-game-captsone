@@ -139,14 +139,58 @@ export default function Canvas() {
                 else this.frames.val = 0 
             }
         }
-        attack({ attack, recipient }) {
-            const tl = gsap.timeline()
-
-            this.health = this.health - attack.damage
-
-            let movementDistance = this.isEnemy ? -20 : 20 
-
+        attack({ attack, recipient, renderedSprites }) {
             let healthBear = this.isEnemy ? '.charizard-health2' : '.elon-health2'
+            this.health -= attack.damage
+
+            switch(attack.name) {
+                case 'Flamethrower':
+                    const flamethrowerImage = new Image()
+                    flamethrowerImage.src = './moves/flamethrower.png'
+                    const flamethrower = new Sprite({
+                        position: {
+                            x: this.position.x,
+                            y: this.position.y,
+                        },
+                        image: flamethrowerImage,
+                        frames: {
+                            max: 4,
+                            hold: 10 
+                        },
+                        animate: true 
+                    })
+
+                    renderedSprites.push(flamethrower)
+
+                    gsap.to(flamethrower.position, {
+                        x: recipient.position.x,
+                        y: recipient.position.y,
+                        onComplete: () => {
+                            //enemy gets hit
+                            gsap.to(healthBear, {
+                                width: `${this.health}%`
+                            })
+                            gsap.to(recipient.position, {
+                                x: recipient.position.x + 10,
+                                yoyo: true,
+                                repeat: 5,
+                                duration: 0.08
+                            })
+                            gsap.to(recipient, {
+                                opacity: 0, 
+                                repeat: 5, 
+                                yoyo: true, 
+                                duration: 0.08 
+                            })
+                            renderedSprites.pop()
+                        }
+                    })
+                    break; 
+                    
+                case 'Slash':
+                    const tl = gsap.timeline()
+
+            let movementDistance = this.isEnemy ? -20 : 20
 
             tl.to(this.position, {
                 x: this.position.x - movementDistance
@@ -171,13 +215,16 @@ export default function Canvas() {
             .to(this.position, {
                 x: this.position.x 
             })
-
             gsap.to(recipient, {
                 opacity: 0,
                 repeat: 5,
                 yoyo: true,
                 duration: 0.2 
             })
+                    break;
+            }
+            
+            
         }
     }
 
@@ -462,12 +509,17 @@ export default function Canvas() {
         animate: true 
     })
 
+    const renderedSprites = []
     function animateBattle(){
         window.requestAnimationFrame(animateBattle)
         // console.log('animating battle')
         battleBackground.draw()
         elon.draw()
         charizard.draw()
+
+        renderedSprites.forEach((sprite) => {
+            sprite.draw()
+        })
     }
     
     // animate()
@@ -476,10 +528,11 @@ export default function Canvas() {
     //event listeners for buttons (attack)
     document.querySelectorAll('button').forEach(button => {
         button.addEventListener('click', (e) => {
-            const selectedAttacks = attacks[e.currentTarget.innerHTML]
+            const selectedAttack = attacks[e.currentTarget.innerHTML]
             charizard.attack({ 
-                attack: selectedAttacks,
-            recipient: elon 
+                attack: selectedAttack,
+            recipient: elon,
+            renderedSprites
             })
         })
     })
