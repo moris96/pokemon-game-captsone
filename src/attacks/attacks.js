@@ -15,7 +15,7 @@ const attacks = {
         type: 'Fire'
     },
     DragonPulse: {
-        name: 'Dragon Pule',
+        name: 'Dragon Pulse',
         damage: 30,
         type: 'Dragon'
     }
