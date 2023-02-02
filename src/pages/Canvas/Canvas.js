@@ -132,7 +132,28 @@ export default function Canvas() {
                 if(this.frames.val < this.frames.max - 1) this.frames.val++
                 else this.frames.val = 0 
             }
-            // this.moving = false 
+        }
+        attack({ attack, recipient }) {
+            const tl = gsap.timeline()
+
+            tl.to(this.position, {
+                x: this.position.x - 20
+            })
+            .to(this.position, {
+                x: this.position.x + 40,
+                duration: .1,
+                onComplete() {
+                    gsap.to(recipient.position, {
+                        x: recipient.position.x + 10,
+                        yoyo: true,
+                        repeat: 5,
+                        duration: 0.08 
+                    })
+                }
+            })
+            .to(this.position, {
+                x: this.position.x 
+            })
         }
     }
 
@@ -429,7 +450,14 @@ export default function Canvas() {
 
     document.querySelectorAll('button').forEach(button => {
         button.addEventListener('click', () => {
-            elon.attack({})
+            charizard.attack({ 
+                attack: {
+                    name: 'Flamethrower',
+                    damage: 10,
+                    type: 'Fire'
+            },
+            recipient: elon 
+            })
         })
     })
 
