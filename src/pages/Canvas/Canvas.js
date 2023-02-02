@@ -107,9 +107,11 @@ export default function Canvas() {
             }
             this.animate = animate 
             this.sprites = sprites
+            this.opacity = 1 
         }
         draw() {
-            // ctx.drawImage(this.image, this.position.x, this.position.y)
+            ctx.save()
+            ctx.globalAlpha = this.opacity
             ctx.drawImage(
                 this.image,
                 this.frames.val * this.width,
@@ -121,6 +123,7 @@ export default function Canvas() {
                 this.image.width / this.frames.max,
                 this.image.height
             )
+            ctx.restore()
 
             if(!this.animate) return 
 
@@ -153,6 +156,13 @@ export default function Canvas() {
             })
             .to(this.position, {
                 x: this.position.x 
+            })
+
+            gsap.to(recipient, {
+                opacity: 0,
+                repeat: 5,
+                yoyo: true,
+                duration: 0.2 
             })
         }
     }
