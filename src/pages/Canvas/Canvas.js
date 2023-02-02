@@ -1,6 +1,7 @@
 import { collisions } from "../../collisions/collisions"
 import { battleZonesData } from "../../battle_zones/battleZones"
 import { gsap } from "gsap"
+import { attacks } from "../../attacks/attacks"
 
 export default function Canvas() {
 
@@ -472,14 +473,12 @@ export default function Canvas() {
     // animate()
     animateBattle()
 
+    //event listeners for buttons (attack)
     document.querySelectorAll('button').forEach(button => {
-        button.addEventListener('click', () => {
+        button.addEventListener('click', (e) => {
+            const selectedAttacks = attacks[e.currentTarget.innerHTML]
             charizard.attack({ 
-                attack: {
-                    name: 'Slash',
-                    damage: 10,
-                    type: 'Normal'
-            },
+                attack: selectedAttacks,
             recipient: elon 
             })
         })
