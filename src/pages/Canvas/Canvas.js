@@ -60,7 +60,7 @@ export default function Canvas() {
             )
         })
     })
-// console.log(boundaries)
+
 
     battleZonesMap.forEach((row, i) => {
         row.forEach((symbol, j) => {
@@ -75,7 +75,6 @@ export default function Canvas() {
             )
         })
     })
-    // console.log(battleZones)
 
 
     //place images on canvas 
@@ -105,8 +104,6 @@ export default function Canvas() {
             this.image.onload = () => {
                 this.width = this.image.width / this.frames.max
                 this.height = this.image.height / this.frames.max
-                // console.log(this.width)
-                // console.log(this.height)
             }
             this.animate = animate 
             this.sprites = sprites
@@ -240,10 +237,10 @@ export default function Canvas() {
                 overlappingArea > (player.width * player.height) / 2
                 && Math.random() < 0.01
                 ) {
-                    console.log('activate battle')
+                    // console.log('activate battle')
                      //deactivate current animation loop 
                      window.cancelAnimationFrame(animationID)
-                     console.log(animationID)
+                    //  console.log(animationID)
 
                     battle.initiated = true 
                     gsap.to('.overlapping-div', {
@@ -289,7 +286,7 @@ export default function Canvas() {
                 }
                 })
                 ) {
-                    console.log('colliding up')
+                    // console.log('colliding up')
                 moving = false 
                     break 
                 }
@@ -313,7 +310,7 @@ export default function Canvas() {
                 }
                 })
                 ) {
-                    console.log('colliding left')
+                    // console.log('colliding left')
                 moving = false 
                     break 
                 }
@@ -337,7 +334,7 @@ export default function Canvas() {
                 }
                 })
                 ) {
-                    console.log('colliding down')
+                    // console.log('colliding down')
                 moving = false 
                     break 
                 }
@@ -361,7 +358,7 @@ export default function Canvas() {
                 }
                 })
                 ) {
-                    console.log('colliding right')
+                    // console.log('colliding right')
                 moving = false 
                     break 
                 }
@@ -421,13 +418,21 @@ export default function Canvas() {
 
     function animateBattle(){
         window.requestAnimationFrame(animateBattle)
-        console.log('animating battle')
+        // console.log('animating battle')
         battleBackground.draw()
         elon.draw()
         charizard.draw()
     }
-    animateBattle()
+    
     // animate()
+    animateBattle()
+
+    document.querySelectorAll('button').forEach(button => {
+        button.addEventListener('click', () => {
+            elon.attack({})
+        })
+    })
+
 
 
     //move player through map on keydown
@@ -467,7 +472,7 @@ export default function Canvas() {
             case 'd':
                 keys.d.pressed = false 
                 break 
-        } 
+        }
     }) 
 
 
