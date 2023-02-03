@@ -1,6 +1,7 @@
 import { collisions } from "../../collisions/collisions"
 import { battleZonesData } from "../../battle_zones/battleZones"
 import { gsap } from "gsap"
+// import BattleScene from "../BattleScene/BattleScene"
 import { attacks } from "../../attacks/attacks"
 
 export default function Canvas() {
@@ -619,6 +620,7 @@ export default function Canvas() {
     // animate()
     animateBattle()
 
+    const queue = []
     //event listeners for buttons (attack)
     document.querySelectorAll('button').forEach(button => {
         button.addEventListener('click', (e) => {
@@ -628,7 +630,30 @@ export default function Canvas() {
                 recipient: elon,
                 renderedSprites
             })
+
+            queue.push(() => {
+                elon.attack({ 
+                    attack: attacks.Flamethrower,
+                    recipient: charizard,
+                    renderedSprites
+                })
+            })
+            // queue.push(() => {
+            //     elon.attack({ 
+            //         attack: attacks.Slash,
+            //         recipient: charizard,
+            //         renderedSprites
+            //     })
+            // })
+
         })
+    })
+
+    document.querySelector('#dialouge-box').addEventListener('click', (e) => {
+        if(queue.length > 0){
+            queue[0]()
+            queue.shift()
+        } else e.currentTarget.style.display = 'none'
     })
 
 
