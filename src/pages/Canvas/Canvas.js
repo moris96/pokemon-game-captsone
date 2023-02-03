@@ -97,7 +97,7 @@ export default function Canvas() {
 
 
     class Sprite {
-        constructor({ position, velocity, image, frames = { max: 1, hold: 10 }, sprites, animate = false, isEnemy = false }) {
+        constructor({ position, velocity, image, frames = { max: 1, hold: 10 }, sprites, animate = false, isEnemy = false, rotation = 0 }) {
             this.position = position
             this.image = image
             this.frames = {...frames, val: 0, elapsed: 0}
@@ -111,9 +111,12 @@ export default function Canvas() {
             this.opacity = 1 
             this.health = 100 
             this.isEnemy = isEnemy
+            this.rotation = rotation
         }
         draw() {
             ctx.save()
+            // ctx.translate(this.position.x + this.width / 2, this.position.y + this.height / 2)
+            // ctx.rotate(1)
             ctx.globalAlpha = this.opacity
             ctx.drawImage(
                 this.image,
