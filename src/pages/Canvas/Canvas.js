@@ -97,7 +97,7 @@ export default function Canvas() {
 
 
     class Sprite {
-        constructor({ position, velocity, image, frames = { max: 1, hold: 10 }, sprites, animate = false, isEnemy = false, rotation = 0 }) {
+        constructor({ position, velocity, image, frames = { max: 1, hold: 10 }, sprites, animate = false, isEnemy = false, rotation = 0, name }) {
             this.position = position
             this.image = image
             this.frames = {...frames, val: 0, elapsed: 0}
@@ -112,6 +112,7 @@ export default function Canvas() {
             this.health = 100 
             this.isEnemy = isEnemy
             this.rotation = rotation
+            this.name = name 
         }
         draw() {
             ctx.save()
@@ -144,6 +145,9 @@ export default function Canvas() {
             }
         }
         attack({ attack, recipient, renderedSprites }) {
+            document.querySelector('#dialouge-box').style.display = 'block'
+            document.querySelector('#dialouge-box').innerHTML = `${this.name} used ${attack.name}!`
+
             let healthBear = this.isEnemy ? '.charizard-health2' : '.elon-health2'
             this.health -= attack.damage
             let movementDistance = this.isEnemy ? -20 : 20
@@ -578,7 +582,8 @@ export default function Canvas() {
             hold: 30
         },
         animate: true,
-        isEnemy: true 
+        isEnemy: true, 
+        name: 'Elon'
     }) 
 
     //charizard (hero) image
@@ -594,7 +599,8 @@ export default function Canvas() {
             max: 4,
             hold: 30
         },
-        animate: true 
+        animate: true,
+        name: 'Charizard'
     })
 
     const renderedSprites = [elon, charizard]

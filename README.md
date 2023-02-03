@@ -19,3 +19,5 @@
 ### Challenges: 
 * Collission detection 
 * Loading character sprites 
+* Transitioning from map to battle scene, and back to map 
+* Styling & CSS!!! 
