@@ -146,13 +146,14 @@ export default function Canvas() {
     }
 
     class Monster extends Sprite {
-        constructor({ position, velocity, image, frames = { max: 1, hold: 10 }, sprites, animate = false, rotation = 0, isEnemy = false, name }){
+        constructor({ position, velocity, image, frames = { max: 1, hold: 10 }, sprites, animate = false, rotation = 0, isEnemy = false, name, attacks }){
             super({
                 position, velocity, image, frames, sprites, animate, rotation
             })
             this.isEnemy = isEnemy
             this.name = name 
             this.health = 100 
+            this.attacks = attacks
         }
         attack({ attack, recipient, renderedSprites }) {
             document.querySelector('#dialouge-box').style.display = 'block'
@@ -580,14 +581,18 @@ export default function Canvas() {
 
     //elon (enemy) image
     const elon = new Monster(monsters.Elon) 
-
     //charizard (hero) image
     const charizard = new Monster(monsters.Charizard)
 
     const renderedSprites = [elon, charizard]
-    const button = document.createElement('button')
-    button.innerHTML = 'Flamethrower'
-    document.querySelector('#attack-box').append(button)
+
+    charizard.attacks.forEach(attack => {
+        const button = document.createElement('button')
+        button.innerHTML = attack.name
+        document.querySelector('#attack-box').append(button)
+    })
+
+
     function animateBattle(){
         window.requestAnimationFrame(animateBattle)
         // console.log('animating battle')
@@ -614,20 +619,20 @@ export default function Canvas() {
                 renderedSprites
             })
 
-            queue.push(() => {
-                elon.attack({ 
-                    attack: attacks.Flamethrower,
-                    recipient: charizard,
-                    renderedSprites
-                })
-            })
             // queue.push(() => {
             //     elon.attack({ 
-            //         attack: attacks.Slash,
+            //         attack: attacks.Flamethrower,
             //         recipient: charizard,
             //         renderedSprites
             //     })
             // })
+            queue.push(() => {
+                elon.attack({ 
+                    attack: attacks.Slash,
+                    recipient: charizard,
+                    renderedSprites
+                })
+            })
 
         })
     })
@@ -636,7 +641,7 @@ export default function Canvas() {
         if(queue.length > 0){
             queue[0]()
             queue.shift()
-        } else e.currentTarget.style.display = 'none'
+        } else e.currentTarget.style.display = 'none' 
     })
 
 

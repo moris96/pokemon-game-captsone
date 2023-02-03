@@ -35,7 +35,7 @@ const monsters = {
         animate: true,
         isEnemy: true, 
         name: 'Elon',
-        attacks: [attacks.Flamethrower, attacks.Slash]
+        attacks: [attacks.Flamethrower, attacks.DragonPulse, attacks.AerialAce, attacks.Slash]
     }
 }
 
