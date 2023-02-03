@@ -162,7 +162,8 @@ export default function Canvas() {
                         animate: true 
                     })
 
-                    renderedSprites.push(flamethrower)
+                    // renderedSprites.push(flamethrower)
+                    renderedSprites.splice(1, 0, flamethrower)
 
                     gsap.to(flamethrower.position, {
                         x: recipient.position.x,
@@ -184,7 +185,8 @@ export default function Canvas() {
                                 yoyo: true, 
                                 duration: 0.08 
                             })
-                            renderedSprites.pop()
+                            // renderedSprites.pop() 
+                            renderedSprites.splice(1, 1)
                         }
                     })
                     break; 
@@ -206,6 +208,7 @@ export default function Canvas() {
                         })
     
                         renderedSprites.push(dragonPulse)
+                        // renderedSprites.splice(1, 0, dragonPulse)
     
                         gsap.to(dragonPulse.position, {
                             x: recipient.position.x,
@@ -227,7 +230,8 @@ export default function Canvas() {
                                     yoyo: true, 
                                     duration: 0.08 
                                 })
-                                renderedSprites.pop()
+                                renderedSprites.pop() 
+                                // renderedSprites.slice(1, 1)
                             }
                         })
                         break; 
@@ -586,13 +590,13 @@ export default function Canvas() {
         animate: true 
     })
 
-    const renderedSprites = []
+    const renderedSprites = [elon, charizard]
     function animateBattle(){
         window.requestAnimationFrame(animateBattle)
         // console.log('animating battle')
         battleBackground.draw()
-        elon.draw()
-        charizard.draw()
+        // elon.draw()
+        // charizard.draw()
 
         renderedSprites.forEach((sprite) => {
             sprite.draw()
