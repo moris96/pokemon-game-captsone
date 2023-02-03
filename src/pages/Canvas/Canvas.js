@@ -115,8 +115,9 @@ export default function Canvas() {
         }
         draw() {
             ctx.save()
-            // ctx.translate(this.position.x + this.width / 2, this.position.y + this.height / 2)
-            // ctx.rotate(1)
+            ctx.translate(this.position.x + this.width / 2, this.position.y + this.height / 2)
+            ctx.rotate(this.rotation)
+            ctx.translate(-this.position.x - this.width / 2, -this.position.y - this.height / 2)
             ctx.globalAlpha = this.opacity
             ctx.drawImage(
                 this.image,
@@ -148,6 +149,8 @@ export default function Canvas() {
             let movementDistance = this.isEnemy ? -20 : 20
             const tl = gsap.timeline()
 
+            let rotation = this.isEnemy ? -2.2 : 1 
+
             switch(attack.name) {
                 case 'Flamethrower':
                     const flamethrowerImage = new Image()
@@ -162,7 +165,8 @@ export default function Canvas() {
                             max: 4,
                             hold: 10 
                         },
-                        animate: true 
+                        animate: true,
+                        rotation
                     })
 
                     // renderedSprites.push(flamethrower)
@@ -615,8 +619,8 @@ export default function Canvas() {
             const selectedAttack = attacks[e.currentTarget.innerHTML]
             charizard.attack({ 
                 attack: selectedAttack,
-            recipient: elon,
-            renderedSprites
+                recipient: elon,
+                renderedSprites
             })
         })
     })
