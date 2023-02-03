@@ -609,6 +609,7 @@ export default function Canvas() {
     animateBattle()
 
     const queue = []
+
     //event listeners for buttons (attack)
     document.querySelectorAll('button').forEach(button => {
         button.addEventListener('click', (e) => {
@@ -619,21 +620,15 @@ export default function Canvas() {
                 renderedSprites
             })
 
-            // queue.push(() => {
-            //     elon.attack({ 
-            //         attack: attacks.Flamethrower,
-            //         recipient: charizard,
-            //         renderedSprites
-            //     })
-            // })
+            const randomAttack = elon.attacks[Math.floor(Math.random() * elon.attacks.length)]
+
             queue.push(() => {
                 elon.attack({ 
-                    attack: attacks.Slash,
+                    attack: randomAttack,
                     recipient: charizard,
                     renderedSprites
                 })
             })
-
         })
     })
 
