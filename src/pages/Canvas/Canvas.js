@@ -586,11 +586,11 @@ export default function Canvas() {
 
     const renderedSprites = [elon, charizard]
 
-    charizard.attacks.forEach(attack => {
-        const button = document.createElement('button')
-        button.innerHTML = attack.name
-        document.querySelector('#attack-box').append(button)
-    })
+    // charizard.attacks.forEach(attack => {
+    //     const button = document.createElement('button')
+    //     button.innerHTML = attack.name
+    //     document.querySelector('#attack-box').append(button)
+    // })
 
 
     function animateBattle(){
