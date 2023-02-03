@@ -630,6 +630,12 @@ export default function Canvas() {
                 })
             })
         })
+
+        button.addEventListener('mouseenter', (e) => {
+            const selectedAttack = attacks[e.currentTarget.innerHTML]
+            document.querySelector('#attack-type').innerHTML = selectedAttack.type 
+            document.querySelector('#attack-type').style.color = selectedAttack.color 
+        })
     })
 
     document.querySelector('#dialouge-box').addEventListener('click', (e) => {
