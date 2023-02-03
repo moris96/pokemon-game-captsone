@@ -33,6 +33,7 @@ h1 {
     left: 0;
     opacity: 0;
     pointer-events: none;
+    z-index: 10;
 }
 
 #attack-bar {
@@ -122,20 +123,19 @@ button:hover {
     color: blue;
 }
 
-.health-position {
+#health-position {
     position: relative;
 }
 
-.elon-health {
+#elon-health {
     height: 5px;
     background-color: grey;
     margin: 10px;
 }
 
-.elon-health2 {
+#elon-health2 {
     height: 5px;
     background-color: green;
-    /* margin: 10px; */
     position: absolute;
     top: 0;
     left: 0;
@@ -175,20 +175,19 @@ button:hover {
     right: 10px;
 }
 
-.health-position2 {
+#health-position2 {
     position: relative;
 }
 
-.charizard-health {
+#charizard-health {
     height: 5px;
     background-color: grey;
     margin: 10px;
 }
 
-.charizard-health2 {
+#charizard-health2 {
     height: 5px;
     background-color: green;
-    /* margin: 10px; */
     position: absolute;
     top: 0;
     left: 0;

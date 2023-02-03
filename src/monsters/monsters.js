@@ -1,10 +1,10 @@
 import { attacks } from "../attacks/attacks"
 
-const charizardImage = new Image()
-charizardImage.src = './pokes/charizard.png'
+// const charizardImage = new Image()
+// charizardImage.src = './pokes/charizard.png'
 
-const elonImage = new Image()
-elonImage.src = './pokes/elon.png'
+// const elonImage = new Image()
+// elonImage.src = './pokes/elon.png'
 
 const monsters = {
     Charizard: {
@@ -12,7 +12,9 @@ const monsters = {
             x: 200,
             y: 230
         },
-        image: charizardImage,
+        image: {
+            src: './pokes/charizard.png'
+        },
         frames: {
             max: 4,
             hold: 30
@@ -27,7 +29,9 @@ const monsters = {
             x: 690,
             y: 50
         },
-        image: elonImage,
+        image: {
+            src: './pokes/elon.png'
+        },
         frames: {
             max: 4,
             hold: 30

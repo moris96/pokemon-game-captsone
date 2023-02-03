@@ -100,13 +100,14 @@ export default function Canvas() {
     class Sprite {
         constructor({ position, velocity, image, frames = { max: 1, hold: 10 }, sprites, animate = false, rotation = 0 }) {
             this.position = position
-            this.image = image
+            this.image = new Image()
             this.frames = {...frames, val: 0, elapsed: 0}
-
             this.image.onload = () => {
                 this.width = this.image.width / this.frames.max
                 this.height = this.image.height / this.frames.max
             }
+            this.image.src = image.src 
+            
             this.animate = animate 
             this.sprites = sprites
             this.opacity = 1 
@@ -169,7 +170,7 @@ export default function Canvas() {
             document.querySelector('#dialouge-box').style.display = 'block'
             document.querySelector('#dialouge-box').innerHTML = `${this.name} used ${attack.name}!`
 
-            let healthBear = this.isEnemy ? '.charizard-health2' : '.elon-health2'
+            let healthBear = this.isEnemy ? '#charizard-health2' : '#elon-health2'
             recipient.health -= attack.damage
             let movementDistance = this.isEnemy ? -20 : 20
             const tl = gsap.timeline()
@@ -459,6 +460,7 @@ export default function Canvas() {
                                 duration: 0.4,
                                 onComplete() {
                                     //activate new animation loop
+                                    initBattle()
                                     animateBattle()
                                     gsap.to('.overlapping-div', {
                                         opacity: 0,
@@ -589,22 +591,111 @@ export default function Canvas() {
         image: battleBackgroundImage
     })
 
-    //elon (enemy) image
-    const elon = new Monster(monsters.Elon) 
-    //charizard (hero) image
-    const charizard = new Monster(monsters.Charizard)
 
-    const renderedSprites = [elon, charizard]
+    let elon 
+    let charizard 
+    let renderedSprites 
+    let queue
 
-    // charizard.attacks.forEach(attack => {
-    //     const button = document.createElement('button')
-    //     button.innerHTML = attack.name
-    //     document.querySelector('#attack-box').append(button)
-    // })
+    let battleAnimationID
 
+    function initBattle() {
+        document.querySelector('#user-interface').style.display = 'block'
+        document.querySelector('#dialouge-box').style.display = 'none'
+        document.querySelector('#elon-health2').style.width = '100%'
+        document.querySelector('#charizard-health2').style.width = '100%'
+        // document.querySelector('#attack-box').replaceChildren()
+
+
+       elon = new Monster(monsters.Elon) 
+       charizard = new Monster(monsters.Charizard)
+       renderedSprites = [elon, charizard]
+       queue = []
+
+        // charizard.attacks.forEach(attack => {
+        //     const button = document.createElement('button')
+        //     button.innerHTML = attack.name
+        //     document.querySelector('#attack-box').append(button)
+        // })
+
+        //event listeners for buttons (attack)
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                const selectedAttack = attacks[e.currentTarget.innerHTML]
+                charizard.attack({ 
+                    attack: selectedAttack,
+                    recipient: elon,
+                    renderedSprites
+                })
+
+                if(elon.health <= 0){
+                    queue.push(() => {
+                        elon.faint()
+                    })
+                    queue.push(() => {
+                        //fade back to black 
+                        gsap.to('.overlapping-div', {
+                            opacity: 1,
+                            onComplete: () => {
+                                window.cancelAnimationFrame(battleAnimationID)
+                                animate()
+                                document.querySelector('#user-interface').style.display = 'none'
+
+                                gsap.to('.overlapping-div', {
+                                    opacity: 0
+                                })
+
+                                battle.initiated = false 
+                            }
+                        })
+                    })
+                }
+
+                //charizard or elon attacks right here 
+                const randomAttack = elon.attacks[Math.floor(Math.random() * elon.attacks.length)]
+
+                queue.push(() => {
+                    elon.attack({ 
+                        attack: randomAttack,
+                        recipient: charizard,
+                        renderedSprites
+                    })
+
+                    if(charizard.health <= 0){
+                        queue.push(() => {
+                            charizard.faint()
+                            battle.initiated = false  })
+                        queue.push(() => {
+                            //fade back to black 
+                            gsap.to('.overlapping-div', {
+                                opacity: 1,
+                                onComplete: () => {
+                                    window.cancelAnimationFrame(battleAnimationID)
+                                    animate()
+                                    document.querySelector('#user-interface').style.display = 'none'
+    
+                                    gsap.to('.overlapping-div', {
+                                        opacity: 0
+                                    })
+
+                                    battle.initiated = false 
+                                }
+                            })
+                        })
+                    }
+                })
+            })
+
+            button.addEventListener('mouseenter', (e) => {
+                const selectedAttack = attacks[e.currentTarget.innerHTML]
+                document.querySelector('#attack-type').innerHTML = selectedAttack.type 
+                document.querySelector('#attack-type').style.color = selectedAttack.color 
+            })
+        })
+    }
 
     function animateBattle(){
-        window.requestAnimationFrame(animateBattle)
+        battleAnimationID = window.requestAnimationFrame(animateBattle)
         // console.log('animating battle')
         battleBackground.draw()
         // elon.draw()
@@ -616,50 +707,12 @@ export default function Canvas() {
     }
     
     // animate()
+    initBattle()
     animateBattle()
 
-    const queue = []
+    // const queue = []
 
-    //event listeners for buttons (attack)
-    document.querySelectorAll('button').forEach(button => {
-        button.addEventListener('click', (e) => {
-            const selectedAttack = attacks[e.currentTarget.innerHTML]
-            charizard.attack({ 
-                attack: selectedAttack,
-                recipient: elon,
-                renderedSprites
-            })
 
-            if(elon.health <= 0){
-                queue.push(() => {
-                    elon.faint()
-                })
-            }
-
-            //charizard or elon attacks right here 
-            const randomAttack = elon.attacks[Math.floor(Math.random() * elon.attacks.length)]
-
-            queue.push(() => {
-                elon.attack({ 
-                    attack: randomAttack,
-                    recipient: charizard,
-                    renderedSprites
-                })
-
-                if(charizard.health <= 0){
-                    queue.push(() => {
-                        charizard.faint()
-                    })
-                }
-            })
-        })
-
-        button.addEventListener('mouseenter', (e) => {
-            const selectedAttack = attacks[e.currentTarget.innerHTML]
-            document.querySelector('#attack-type').innerHTML = selectedAttack.type 
-            document.querySelector('#attack-type').style.color = selectedAttack.color 
-        })
-    })
 
     document.querySelector('#dialouge-box').addEventListener('click', (e) => {
         if(queue.length > 0){
