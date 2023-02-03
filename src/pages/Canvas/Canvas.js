@@ -605,6 +605,9 @@ export default function Canvas() {
     })
 
     const renderedSprites = [elon, charizard]
+    const button = document.createElement('button')
+    button.innerHTML = 'Flamethrower'
+    document.querySelector('#attack-box').append(button)
     function animateBattle(){
         window.requestAnimationFrame(animateBattle)
         // console.log('animating battle')

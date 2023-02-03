@@ -1,0 +1,6 @@
+const monsters = {
+    
+}
+
+
+export { monsters }

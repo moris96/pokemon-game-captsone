@@ -59,7 +59,7 @@ h1 {
     cursor: pointer;
 }
 
-.attack-button {
+#attack-box {
     width: 66.66%;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
