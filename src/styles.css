@@ -36,6 +36,10 @@ h1 {
     z-index: 10;
 }
 
+#user-interface {
+    display: none;
+}
+
 #attack-bar {
     background-color: white;
     width: 1020px;

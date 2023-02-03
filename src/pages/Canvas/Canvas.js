@@ -3,6 +3,8 @@ import { battleZonesData } from "../../battle_zones/battleZones"
 import { gsap } from "gsap"
 import { attacks } from "../../attacks/attacks"
 import { monsters } from "../../monsters/monsters"
+import { audio } from "../../audio/audio"
+// import {Howl, Howler} from 'howler';
 
 export default function Canvas() {
 
@@ -164,6 +166,7 @@ export default function Canvas() {
             gsap.to(this, {
                 opacity: 0
             })
+            audio.battle.stop()
         }
 
         attack({ attack, recipient, renderedSprites }) {
@@ -448,6 +451,9 @@ export default function Canvas() {
                      window.cancelAnimationFrame(animationID)
                     //  console.log(animationID)
 
+                    audio.Map.stop()
+                    // audio.initBattle.play()
+                    audio.battle.play()
                     battle.initiated = true 
                     gsap.to('.overlapping-div', {
                         opacity: 1,
@@ -706,9 +712,9 @@ export default function Canvas() {
         })
     }
     
-    // animate()
-    initBattle()
-    animateBattle()
+    animate()
+    // initBattle()
+    // animateBattle()
 
     // const queue = []
 
@@ -762,6 +768,14 @@ export default function Canvas() {
                 break 
         }
     }) 
+
+    let clicked = false 
+    window.addEventListener('click', () => {
+        if(!clicked){
+            audio.Map.play()
+            clicked = true
+        }
+    })
 
 
     return (
