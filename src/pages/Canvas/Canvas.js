@@ -1,8 +1,8 @@
 import { collisions } from "../../collisions/collisions"
 import { battleZonesData } from "../../battle_zones/battleZones"
 import { gsap } from "gsap"
-// import BattleScene from "../BattleScene/BattleScene"
 import { attacks } from "../../attacks/attacks"
+import { monsters } from "../../monsters/monsters"
 
 export default function Canvas() {
 
@@ -570,39 +570,10 @@ export default function Canvas() {
     })
 
     //elon (enemy) image
-    const elonImage = new Image()
-    elonImage.src = './pokes/elon.png'
-    const elon = new Sprite({
-        position: {
-            x: 690,
-            y: 50
-        },
-        image: elonImage,
-        frames: {
-            max: 4,
-            hold: 30
-        },
-        animate: true,
-        isEnemy: true, 
-        name: 'Elon'
-    }) 
+    const elon = new Sprite(monsters.Elon) 
 
     //charizard (hero) image
-    const charizardImage = new Image()
-    charizardImage.src = './pokes/charizard.png'
-    const charizard = new Sprite({
-        position: {
-            x: 200,
-            y: 230
-        },
-        image: charizardImage,
-        frames: {
-            max: 4,
-            hold: 30
-        },
-        animate: true,
-        name: 'Charizard'
-    })
+    const charizard = new Sprite(monsters.Charizard)
 
     const renderedSprites = [elon, charizard]
     const button = document.createElement('button')
