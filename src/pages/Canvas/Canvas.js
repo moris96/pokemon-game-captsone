@@ -40,7 +40,7 @@ export default function Canvas() {
             this.height = 48
         }
         draw(){
-            ctx.fillStyle = 'rgba(255, 0, 0, 0.5)'
+            ctx.fillStyle = 'rgba(255, 0, 0, 0)'
             ctx.fillRect(this.position.x, this.position.y, this.width, this.height)
         }
     }
@@ -167,6 +167,7 @@ export default function Canvas() {
                 opacity: 0
             })
             audio.battle.stop()
+            audio.Map.play()
         }
 
         attack({ attack, recipient, renderedSprites }) {
@@ -426,7 +427,7 @@ export default function Canvas() {
 
         // activate battle 
         if(keys.w.pressed || keys.a.pressed || keys.s.pressed || keys.d.pressed){
-            for(let i in battleZones){
+            for(const i in battleZones){
                 const battleZone = battleZones[i]
                 const overlappingArea = 
                 (Math.min(
@@ -450,7 +451,6 @@ export default function Canvas() {
                      //deactivate current animation loop 
                      window.cancelAnimationFrame(animationID)
                     //  console.log(animationID)
-
                     audio.Map.stop()
                     // audio.initBattle.play()
                     audio.battle.play()
@@ -610,7 +610,7 @@ export default function Canvas() {
         document.querySelector('#dialouge-box').style.display = 'none'
         document.querySelector('#elon-health2').style.width = '100%'
         document.querySelector('#charizard-health2').style.width = '100%'
-        // document.querySelector('#attack-box').replaceChildren()
+        // document.querySelector('#attack-bar').replaceChildren()
 
 
        elon = new Monster(monsters.Elon) 
